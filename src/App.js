@@ -13,7 +13,17 @@ function App() {
     alamat: "",
     status: "",
   });
-  const [savedData, setSavedData] = useState({});
+
+  const [savedData, setSavedData] = useState({
+    no: "",
+    bulan: "",
+    tanggal: "",
+    namaPertama: "",
+    jabatan: "",
+    namaKedua: "",
+    alamat: "",
+    status: "",
+  });
 
   function handleChange(event) {
     setFormData((prevFormData) => {
@@ -68,12 +78,18 @@ function App() {
               type="text"
               className="shadow-md rounded-lg p-2"
               placeholder="Nama"
+              name="namaPertama"
+              value={formData.namaPertama}
+              onChange={handleChange}
             />
 
             <input
               type="text"
               className="shadow-md rounded-lg p-2"
               placeholder="Jabatan"
+              name="jabatan"
+              value={formData.jabatan}
+              onChange={handleChange}
             />
           </div>
         </div>
@@ -84,16 +100,25 @@ function App() {
               type="text"
               className="shadow-md rounded-lg p-2"
               placeholder="Nama"
+              name="namaKedua"
+              value={formData.namaKedua}
+              onChange={handleChange}
             />
             <input
               type="text"
               className="shadow-md rounded-lg p-2"
               placeholder="Alamat"
+              name="alamat"
+              value={formData.alamat}
+              onChange={handleChange}
             />
             <input
               type="text"
               className="shadow-md rounded-lg p-2"
               placeholder="Status Kepemilikan Bangunan"
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
             />
           </div>
         </div>
@@ -257,7 +282,12 @@ function App() {
         <PDFDownloadLink document={<PdfFile data={savedData} />} fileName="pdf">
           {({ loading }) =>
             loading ? (
-              "loading"
+              <button
+                disabled={true}
+                className="text-white bg-slate-400 p-3 rounded-lg hover:bg-slate-300 hover:text-black"
+              >
+                Generating PDF
+              </button>
             ) : (
               <button className="text-white bg-slate-800 p-3 rounded-lg hover:bg-slate-300 hover:text-black">
                 Generate PDF
