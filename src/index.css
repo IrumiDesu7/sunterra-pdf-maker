@@ -28,8 +28,13 @@
   font-family: Calibri, "Trebuchet MS", sans-serif;
 }
 
-img {
-  height: 100px;
+.img-uploaded {
+  height: 150px;
+}
+
+.pln-uploaded {
+  width: 100%;
+  max-height: 800px;
 }
 
 th,

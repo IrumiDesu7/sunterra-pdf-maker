@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import header from "./assets/header.png";
 import footer from "./assets/footer.png";
 
@@ -24,6 +24,8 @@ function App() {
     enamEnd: "",
     tujuhStart: "",
     tujuhEnd: "",
+    pvModule1: "",
+    pvModule2: "",
     wifiId: "",
     wifiPass: "",
     inverter: "",
@@ -36,15 +38,63 @@ function App() {
     status: "",
   });
   const [image, setImage] = useState(null);
+  const [image1, setImage1] = useState(null);
+  const [image2, setImage2] = useState(null);
+  const [image3, setImage3] = useState(null);
+  const [plnImg, setPlnImg] = useState(null);
+  const [componentCount, setComponentCount] = useState("");
+  const [componentElements, setComponentElements] = useState([]);
+  const [pvCount, setPvCount] = useState("");
+  const [pvElements, setPvElements] = useState([]);
 
+  const handleComponentCount = (event) => {
+    setComponentCount(event.target.value);
+    setComponentElements(
+      Array.from({ length: event.target.value }, (_, i) => i)
+    );
+  };
+  const handlePvCount = (event) => {
+    setPvCount(event.target.value);
+    setPvElements(Array.from({ length: event.target.value }, (_, i) => i));
+  };
+  const handlePlnSelect = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPlnImg(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
-
     reader.onloadend = () => {
       setImage(reader.result);
     };
-
+    reader.readAsDataURL(file);
+  };
+  const handleFileSelect1 = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImage1(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+  const handleFileSelect2 = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImage2(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+  const handleFileSelect3 = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImage3(reader.result);
+    };
     reader.readAsDataURL(file);
   };
 
@@ -57,9 +107,13 @@ function App() {
     });
   }
 
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
+
   return (
-    <div className="h-[900px] flex justify-center ">
-      <div>
+    <div className="flex justify-center h-full">
+      <div className="h-[930px] ">
         <header>
           <img src={header} alt="header" />
         </header>
@@ -83,25 +137,25 @@ function App() {
             <div>
               <ul>
                 <li>
-                  <div class="flex gap-[53px] font-bold">
+                  <div className="flex gap-[53px] font-bold">
                     <span>Nama</span>
                     <span>: {formData.namaPertama}</span>
                   </div>
                 </li>
                 <li>
-                  <div class="flex gap-5">
+                  <div className="flex gap-5">
                     <span className="font-bold">Perusahaan</span>
                     <span>: PT Energi Indonesia Berkarya</span>
                   </div>
                 </li>
                 <li>
-                  <div class="flex gap-[43px]">
+                  <div className="flex gap-[43px]">
                     <span className="font-bold">Jabatan</span>
                     <span>: {formData.jabatan}</span>
                   </div>
                 </li>
                 <li>
-                  <div class="flex gap-[47px]">
+                  <div className="flex gap-[47px]">
                     <span className="font-bold">Alamat</span>
                     <span>
                       : The Plaza Tower Lt 41 Jl. MH. Thamrin, Kav 28-30,
@@ -121,20 +175,20 @@ function App() {
             <div>
               <ul>
                 <li>
-                  <div class="flex gap-[148px] font-bold">
+                  <div className="flex gap-[148px] font-bold">
                     <span>Nama</span>
                     <span>: {formData.namaKedua}</span>
                   </div>
                 </li>
 
                 <li>
-                  <div class="flex gap-[140px] font-bold">
+                  <div className="flex gap-[140px] font-bold">
                     <span>Alamat</span>
                     <span>: {formData.alamat}</span>
                   </div>
                 </li>
                 <li>
-                  <div class="flex gap-[10px]">
+                  <div className="flex gap-[10px]">
                     <span className="font-bold">
                       Status Kepemilikan Bangunan
                     </span>
@@ -462,11 +516,18 @@ function App() {
                 </tr>
               </thead>
               <tbody className="text-sm">
-                <tr>
+                {/* <tr>
                   <td>1</td>
                   <td>Proses Digital Survey</td>
                   <td className="text-center">10</td>
-                </tr>
+                </tr> */}
+                {componentElements.map((element, index) => (
+                  <tr key={element}>
+                    <td>{index + 1}</td>
+                    <td>{formData[`componentName${index}`]}</td>
+                    <td>{formData[`componentQty${index}`]}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -478,24 +539,28 @@ function App() {
                 </tr>
               </thead>
               <tbody className="text-sm">
-                <tr>
-                  <td>PV Module</td>
-                  <td>dynamic</td>
-                  <td>dynamic</td>
-                </tr>
+                {pvElements.map((element, index) => (
+                  <tr key={element}>
+                    {index === 0 && (
+                      <td rowSpan={pvElements.length}>PV Module</td>
+                    )}
+                    <td>{formData[`leftPV${element}`]}</td>
+                    <td>{formData[`rightPV${element}`]}</td>
+                  </tr>
+                ))}
                 <tr>
                   <td>Inverter</td>
                   <td colSpan={2}>{formData.inverter}</td>
                 </tr>
                 <tr>
                   <td>DTU</td>
-                  <td colSpan={2}>dynamic</td>
+                  <td colSpan={2}>{formData.dtu}</td>
                 </tr>
                 <tr>
                   <td>Account</td>
                   <td colSpan={2}>
-                    <div>User :</div>
-                    <div>Pass :</div>
+                    <div>User : {formData.accountUser}</div>
+                    <div>Pass : {formData.accountPass}</div>
                   </td>
                 </tr>
               </tbody>
@@ -520,15 +585,75 @@ function App() {
                 </tr>
               </thead>
               <tbody className="text-sm">
-                <tr>
+                <tr className={`${image ? "" : "print:hidden"}`}>
                   <td className="flex justify-center">
-                    <div>
+                    <div className="p-3">
                       <input
                         className="print:hidden"
                         type="file"
                         onChange={handleFileSelect}
                       />
-                      {image && <img src={image} alt="Uploaded" />}
+                      {image && (
+                        <img
+                          src={image}
+                          className="img-uploaded"
+                          alt="Uploaded"
+                        />
+                      )}
+                    </div>
+                  </td>
+                </tr>
+                <tr className={`${image1 ? "" : "print:hidden"}`}>
+                  <td className="flex justify-center">
+                    <div className="p-3">
+                      <input
+                        className="print:hidden"
+                        type="file"
+                        onChange={handleFileSelect1}
+                      />
+                      {image1 && (
+                        <img
+                          src={image1}
+                          className="img-uploaded"
+                          alt="Uploaded"
+                        />
+                      )}
+                    </div>
+                  </td>
+                </tr>
+                <tr className={`${image2 ? "" : "print:hidden"}`}>
+                  <td className="flex justify-center">
+                    <div className="p-3">
+                      <input
+                        className="print:hidden"
+                        type="file"
+                        onChange={handleFileSelect2}
+                      />
+                      {image2 && (
+                        <img
+                          src={image2}
+                          className="img-uploaded"
+                          alt="Uploaded"
+                        />
+                      )}
+                    </div>
+                  </td>
+                </tr>
+                <tr className={`${image3 ? "" : "print:hidden"}`}>
+                  <td className="flex justify-center">
+                    <div className="p-3">
+                      <input
+                        className="print:hidden"
+                        type="file"
+                        onChange={handleFileSelect3}
+                      />
+                      {image3 && (
+                        <img
+                          src={image3}
+                          className="img-uploaded"
+                          alt="Uploaded"
+                        />
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -539,10 +664,36 @@ function App() {
         <footer>
           <img src={footer} alt="footer" />
         </footer>
+        <header className={`${plnImg ? "" : "print:hidden"}`}>
+          <img src={header} alt="header" />
+        </header>
+        <section
+          className={`flex flex-col h-full mx-[1in] ${
+            plnImg ? "" : "print:hidden"
+          }`}
+        >
+          <div className="text-lg ">Tanda Terima PLN :</div>
+          <div className="text-center">
+            <input
+              className="print:hidden"
+              type="file"
+              onChange={handlePlnSelect}
+            />
+            {plnImg && (
+              <img src={plnImg} className="pln-uploaded" alt="Uploaded" />
+            )}
+          </div>
+          <div className="text-sm">
+            Note : ESDM Submit On progress after this BAPP Done.
+          </div>
+        </section>
+        <footer className={`${plnImg ? "" : "print:hidden"}`}>
+          <img src={footer} alt="footer" />
+        </footer>
       </div>
-      <div className="print:hidden flex flex-col gap-4 p-10 text-sm bg-slate-500 h-[1080PX]">
+      <div className="print:hidden flex flex-col gap-4 p-10 text-sm ">
         <div>
-          <div className="text-white">Nomor Surat</div>
+          <div className="">Nomor Surat</div>
           <div className="flex items-center gap-4">
             <input
               type="text"
@@ -572,7 +723,7 @@ function App() {
         </div>
 
         <div>
-          <div className="text-white">Tanggal Deskripsi</div>
+          <div className="">Tanggal Deskripsi</div>
           <div className="flex items-center gap-4">
             <input
               type="text"
@@ -611,7 +762,7 @@ function App() {
         </div>
 
         <div>
-          <div className="text-white">Pihak Pertama</div>
+          <div className="">Pihak Pertama</div>
           <div className="flex items-center gap-4">
             <input
               type="text"
@@ -633,7 +784,7 @@ function App() {
           </div>
         </div>
         <div>
-          <div className="text-white">Pihak Kedua</div>
+          <div className="">Pihak Kedua</div>
           <div className="flex items-center gap-4">
             <input
               type="text"
@@ -662,10 +813,10 @@ function App() {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="font-bold text-lg text-white">Lampiran 1</div>
+          <div className="font-bold text-lg ">Lampiran 1</div>
 
           <div className="flex items-center gap-4">
-            <div className="text-white">Pelaksanaan Off Site Survey</div>
+            <div className="">Pelaksanaan Off Site Survey</div>
             <input
               type="text"
               className="shadow-md rounded-lg p-2"
@@ -684,7 +835,7 @@ function App() {
             />
           </div>
           <div className="flex items-center gap-4">
-            <div className="text-white">Pengajuan Penawaran Harga</div>
+            <div className="">Pengajuan Penawaran Harga</div>
             <input
               type="text"
               className="shadow-md rounded-lg p-2"
@@ -703,9 +854,7 @@ function App() {
             />
           </div>
           <div className="flex items-center gap-4">
-            <div className="text-white">
-              Detailed Design Engineering Solar Panel
-            </div>
+            <div className="">Detailed Design Engineering Solar Panel</div>
             <input
               type="text"
               className="shadow-md rounded-lg p-2"
@@ -724,7 +873,7 @@ function App() {
             />
           </div>
           <div className="flex items-center gap-4">
-            <div className="text-white">Pengurusan Permit Net Metering</div>
+            <div className="">Pengurusan Permit Net Metering</div>
             <input
               type="text"
               className="shadow-md rounded-lg p-2"
@@ -743,7 +892,7 @@ function App() {
             />
           </div>
           <div className="flex items-center gap-4">
-            <div className="text-white">Pengerjaan Instalasi</div>
+            <div className="">Pengerjaan Instalasi</div>
             <input
               type="text"
               className="shadow-md rounded-lg p-2"
@@ -762,7 +911,7 @@ function App() {
             />
           </div>
           <div className="flex items-center gap-4">
-            <div className="text-white">Test & Commissioning</div>
+            <div className="">Test & Commissioning</div>
             <input
               type="text"
               className="shadow-md rounded-lg p-2"
@@ -781,7 +930,7 @@ function App() {
             />
           </div>
           <div className="flex items-center gap-4">
-            <div className="text-white">Connected to WiFi</div>
+            <div className="">Connected to WiFi</div>
             <input
               type="text"
               className="shadow-md rounded-lg p-2"
@@ -801,10 +950,35 @@ function App() {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="font-bold text-lg text-white">Lampiran 2</div>
-          <div className="flex items-center gap-4">
-            <div className="text-white">Component 1</div>
-            <input
+          <div className="font-bold text-lg ">Lampiran 2</div>
+          <input
+            type="text"
+            className="shadow-md rounded-lg p-2"
+            placeholder="Components Count"
+            value={componentCount}
+            onChange={handleComponentCount}
+          />
+          <div className="flex flex-col gap-4">
+            {componentElements.map((element, index) => (
+              <div key={element} className="flex gap-2 items-center">
+                <div className="">Component {index + 1}</div>
+                <input
+                  type="text"
+                  className="shadow-md rounded-lg p-2"
+                  placeholder="Components Name"
+                  name={`componentName${index}`}
+                  onChange={handleChange}
+                />
+                <input
+                  type="text"
+                  className="shadow-md rounded-lg p-2"
+                  placeholder="Quantity"
+                  name={`componentQty${index}`}
+                  onChange={handleChange}
+                />
+              </div>
+            ))}
+            {/* <input
               type="text"
               className="shadow-md rounded-lg p-2"
               placeholder="Components Name"
@@ -813,18 +987,44 @@ function App() {
               type="text"
               className="shadow-md rounded-lg p-2"
               placeholder="Quantity"
-            />
+            /> */}
           </div>
-          <div className="flex items-center gap-4">
-            <div className="text-white">PV Module</div>
+          <input
+            type="text"
+            className="shadow-md rounded-lg p-2"
+            placeholder="PV Module Count"
+            value={pvCount}
+            onChange={handlePvCount}
+          />
+          <div className="flex flex-col justify-center gap-4">
+            {/* <div className="">PV Module</div>
             <input
               type="text"
               className="shadow-md rounded-lg p-2"
               placeholder="PV Module"
-            />
+            /> */}
+            {pvElements.map((element, index) => (
+              <div key={element} className="flex gap-2 items-center">
+                <div>PV Module {index + 1}</div>
+                <input
+                  type="text"
+                  className="shadow-md rounded-lg p-2"
+                  placeholder="LeftPV"
+                  name={`leftPV${index}`}
+                  onChange={handleChange}
+                />
+                <input
+                  type="text"
+                  className="shadow-md rounded-lg p-2"
+                  placeholder="RightPV"
+                  name={`rightPV${index}`}
+                  onChange={handleChange}
+                />
+              </div>
+            ))}
           </div>
           <div className="flex items-center gap-4">
-            <div className="text-white">Inverter</div>
+            <div className="">Inverter</div>
             <input
               type="text"
               className="shadow-md rounded-lg p-2"
@@ -835,7 +1035,7 @@ function App() {
             />
           </div>
           <div className="flex items-center gap-4">
-            <div className="text-white">DTU</div>
+            <div className="">DTU</div>
             <input
               type="text"
               className="shadow-md rounded-lg p-2"
@@ -846,7 +1046,7 @@ function App() {
             />
           </div>
           <div className="flex items-center gap-4">
-            <div className="text-white">Account</div>
+            <div className="">Account</div>
             <input
               type="text"
               className="shadow-md rounded-lg p-2"
