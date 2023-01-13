@@ -137,25 +137,25 @@ function App() {
             <div>
               <ul>
                 <li>
-                  <div className="flex gap-[53px] font-bold">
+                  <div className="flex gap-[93px] font-bold">
                     <span>Nama</span>
                     <span>: {formData.namaPertama}</span>
                   </div>
                 </li>
                 <li>
-                  <div className="flex gap-5">
+                  <div className="flex gap-[60px]">
                     <span className="font-bold">Perusahaan</span>
                     <span>: PT Energi Indonesia Berkarya</span>
                   </div>
                 </li>
                 <li>
-                  <div className="flex gap-[43px]">
+                  <div className="flex gap-[83px]">
                     <span className="font-bold">Jabatan</span>
                     <span>: {formData.jabatan}</span>
                   </div>
                 </li>
                 <li>
-                  <div className="flex gap-[47px]">
+                  <div className="flex gap-[85px]">
                     <span className="font-bold">Alamat</span>
                     <span>
                       : The Plaza Tower Lt 41 Jl. MH. Thamrin, Kav 28-30,
@@ -171,25 +171,25 @@ function App() {
             <span className="font-bold">“PIHAK PERTAMA”</span>.
           </div>
           <div className="flex justify-start items-start text-sm gap-4 px-3 ">
-            <div className="font-bold">1.</div>
+            <div className="font-bold">2.</div>
             <div>
               <ul>
                 <li>
-                  <div className="flex gap-[148px] font-bold">
+                  <div className="flex gap-[95px] font-bold">
                     <span>Nama</span>
                     <span>: {formData.namaKedua}</span>
                   </div>
                 </li>
 
                 <li>
-                  <div className="flex gap-[140px] font-bold">
+                  <div className="flex gap-[88px] font-bold">
                     <span>Alamat</span>
-                    <span>: {formData.alamat}</span>
+                    <span className="max-w-sm">: {formData.alamat}</span>
                   </div>
                 </li>
                 <li>
                   <div className="flex gap-[10px]">
-                    <span className="font-bold">
+                    <span className="font-bold max-w-[120px]">
                       Status Kepemilikan Bangunan
                     </span>
                     <span>: {formData.status}</span>
@@ -503,7 +503,7 @@ function App() {
         </header>
         <section className="flex flex-col h-full mx-[1in] ">
           <div className="text-lg font-bold">
-            LAMPIRAN 2 - LAPORAN AKHIR PEKERJAAN PROJECT TEDY KOMPONEN UTAMA
+            LAMPIRAN 2 - LAPORAN AKHIR PEKERJAAN PROJECT KOMPONEN UTAMA
             FASILITAS PLTS
           </div>
           <div>
@@ -785,29 +785,31 @@ function App() {
         </div>
         <div>
           <div className="">Pihak Kedua</div>
-          <div className="flex items-center gap-4">
-            <input
-              type="text"
-              className="shadow-md rounded-lg p-2"
-              placeholder="Nama"
-              name="namaKedua"
-              value={formData.namaKedua}
-              onChange={handleChange}
-            />
-            <input
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-4 w-full">
+              <input
+                type="text"
+                className="flex-1 shadow-md rounded-lg p-2"
+                placeholder="Nama"
+                name="namaKedua"
+                value={formData.namaKedua}
+                onChange={handleChange}
+              />
+              <input
+                type="text"
+                className="flex-1 shadow-md rounded-lg p-2"
+                placeholder="Status Kepemilikan Bangunan"
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+              />
+            </div>
+            <textarea
               type="text"
               className="shadow-md rounded-lg p-2"
               placeholder="Alamat"
               name="alamat"
               value={formData.alamat}
-              onChange={handleChange}
-            />
-            <input
-              type="text"
-              className="shadow-md rounded-lg p-2"
-              placeholder="Status Kepemilikan Bangunan"
-              name="status"
-              value={formData.status}
               onChange={handleChange}
             />
           </div>
